@@ -3,3 +3,6 @@
 pushaG.sh
 .DS_Store
 pkg/.DS_Store
+img.png
+/internal/img.png
+/internal/README.md
