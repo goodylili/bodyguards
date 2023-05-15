@@ -1,3 +1,5 @@
 .idea
 .env
 pushaG.sh
+.DS_Store
+pkg/.DS_Store
