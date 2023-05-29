@@ -1,4 +1,4 @@
-module GoPro
+module BodyGuards
 
 go 1.20
 
