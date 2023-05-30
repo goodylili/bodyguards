@@ -6,3 +6,4 @@ pkg/.DS_Store
 img.png
 /internal/img.png
 /internal/README.md
+/config/.golangci.yml

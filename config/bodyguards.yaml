@@ -1,6 +1,6 @@
 run:
+  architecture: clean
   enable:
     - linter
     - report
     - documentation
-  architecture: clean

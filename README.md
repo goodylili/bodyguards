@@ -45,17 +45,14 @@ Here's the contents of an example `bodyguards.yaml` file
 
 ```yaml
 
-# Linter options
-linter: golangci-lint
 
-# File architecture options
-architecture: clean
+run:
+  architecture: clean # File architecture options
 
-# Report options
-report: Go Report Card
-
-# Documentation options
-documentation: Godoc
+  enable: # enable features
+    - linter
+    - report
+    - documentation
 
 ```
 
@@ -68,11 +65,9 @@ bodyguards run
 
 Additionally, You can generate a comprehensive report of the fixes/issues in your project with the `report` command
 
-
 ```shell
 bodyguards report 
 ```
-
 
 ## Contributing
 
