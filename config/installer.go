@@ -2,13 +2,84 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 )
 
-// InstallDependencies rewrite to install dependencies based on yaml
-func InstallDependencies() (string, error) {
+// InstallDependencies rewrite to install dependencies based on yaml and sets up permissions for architecture bash scripts
+func InstallDependencies() error {
+	// Give executable permission to files
+	err := GiveExecutablePermissionToFiles()
+	if err != nil {
+		fmt.Println("Error: failed to give executable permission to files:", err)
+		return err
+	}
+
+	// Install golangCI-lint
+	msg, err := installGolangCILint()
+	if err != nil {
+		fmt.Println("Error: failed to install Golangci-lint:", err)
+		return err
+	}
+	fmt.Println(msg)
+
+	// Install Godoc
+	msg, err = installGodoc()
+	if err != nil {
+		fmt.Println("Error: failed to install Godoc:", err)
+		return err
+	}
+	fmt.Println(msg)
+
+	// Install Goreportcard-cli
+	msg, err = installGoReportCard()
+	if err != nil {
+		fmt.Println("Error: failed to install Goreportcard-cli:", err)
+		return err
+	}
+	fmt.Println(msg)
+
+	// All operations completed successfully
+	return nil
+}
+
+func GiveExecutablePermissionToFiles() error {
+	filePaths := []string{
+		"internal/architecture/hexagonal.sh",
+		"internal/architecture/microservice.sh",
+		"internal/architecture/monolithic.sh",
+		"internal/architecture/mvc.sh",
+	}
+	for _, filePath := range filePaths {
+		err := os.Chmod(filePath, 0755)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func installGolangCILint() (string, error) {
+	// Command 1: go install golang-ci-lint
+	cmd := exec.Command("go", "install", "github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.1")
+	if err := cmd.Run(); err != nil {
+		return "", fmt.Errorf("failed to install Golangci-lint: %w", err)
+	}
+	return "GolangCI-lint installed successfully", nil
+}
+
+func installGodoc() (string, error) {
+	// Install godoc command
+	cmd := exec.Command("go", "install", "golang.org/x/tools/cmd/godoc@latest")
+	err := cmd.Run()
+	if err != nil {
+		return "", fmt.Errorf("failed to install Godoc: %w", err)
+	}
+
+	return "Godoc installed successfully", nil
+}
+
+func installGoReportCard() (string, error) {
 	// Git clone
 	cmd := exec.Command("git", "clone", "https://github.com/gojp/goreportcard.git")
 	err := cmd.Run()
@@ -36,18 +107,5 @@ func InstallDependencies() (string, error) {
 		return "", fmt.Errorf("failed to execute 'go install': %w", err)
 	}
 
-	// Install godoc command
-	cmd = exec.Command("go", "install", "golang.org/x/tools/cmd/godoc@latest")
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("Error installing godoc: %v", err)
-	}
-
-	// Command 1: go install golang-ci-lint
-	cmd = exec.Command("go", "install", "github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.1")
-	if err := cmd.Run(); err != nil {
-		log.Fatal("Failed to install golangci-lint:", err)
-	}
-
-	return "Installations Complete", nil
+	return "Goreportcard-cli successfully installed", nil
 }

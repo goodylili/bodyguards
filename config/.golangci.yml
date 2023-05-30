@@ -33,6 +33,7 @@ run:
     - depguard
     - wsl
 linters-settings:
+
   goconst:
     min-len: 3
   gosimple:
