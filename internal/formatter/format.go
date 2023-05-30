@@ -9,19 +9,6 @@ import (
 	"reflect"
 )
 
-func main() {
-	// Retrieve the package name of the main package
-	packageName := getPackageName()
-
-	// Execute go fmt command to format the package
-	err := formatPackage(packageName)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("Go files in the package have been formatted successfully.")
-}
-
 // getPackageName retrieves the package name of the main package
 func getPackageName() string {
 	// Retrieve the absolute path of the main executable
