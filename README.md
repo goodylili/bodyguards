@@ -38,7 +38,6 @@ The configuration file is a YAML file where you can specify options for Bodyguar
 
 - `formatter`: Format your Go code with `gofmt`.
 - `linter`: Lint your Go code with `golangci-lint`.
-- `profiler`: The profiler to use. The default profiler is `go-pprof`.
 - `architecture`: Set up the file architecture for your program following one of the popular architectural patterns.
 - `report`: Generate a comprehensive report and rating of your project using `Go Report Card`.
 - `documentation`: Generate the documentation for your project with `Godoc`.
@@ -52,9 +51,6 @@ formatter: gofmt
 
 # Linter options
 linter: golangci-lint
-
-# Profiler options
-profiler: go-pprof
 
 # File architecture options
 architecture: clean
