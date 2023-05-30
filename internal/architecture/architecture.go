@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-func executeBashScript(scriptName string) error {
+func ExecuteBashScript(scriptName string) error {
 	cmd := exec.Command("bash", scriptName)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

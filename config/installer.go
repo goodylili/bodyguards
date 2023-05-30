@@ -43,5 +43,11 @@ func InstallDependencies() (string, error) {
 		log.Fatalf("Error installing godoc: %v", err)
 	}
 
+	// Command 1: go install golang-ci-lint
+	cmd = exec.Command("go", "install", "github.com/golangci/golangci-lint/cmd/golangci-lint@v1.51.1")
+	if err := cmd.Run(); err != nil {
+		log.Fatal("Failed to install golangci-lint:", err)
+	}
+
 	return "Installations Complete", nil
 }

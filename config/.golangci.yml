@@ -1,0 +1,58 @@
+run:
+  enable:
+    - bodyclose
+    - deadcode
+    - errcheck
+    - goconst
+    - gofmt
+    - goimports
+    - gosimple
+    - ineffassign
+    - misspell
+    - unconvert
+    - unparam
+    - whitespace
+    - staticcheck
+    - structcheck
+    - varcheck
+    - maligned
+    - prealloc
+    - unused
+  disable:
+    - exhaustivestruct
+    - gochecknoinits
+    - godox
+    - interfacer
+    - lll
+    - nakedret
+    - scopelint
+    - gochecknoglobals
+    - gochecknoinits
+    - wsl
+    - unconvert
+    - depguard
+    - wsl
+linters-settings:
+  goconst:
+    min-len: 3
+  gosimple:
+    ignore:
+      - U1000
+  prealloc:
+    ranges: true
+  staticcheck:
+  # ...
+  structcheck:
+  # ...
+  varcheck:
+  # ...
+  maligned:
+  # ...
+  unused:
+  # ...
+issues:
+  exclude-rules:
+    - id: exported
+      pattern: '"[A-Z]" should not be used as the name for a variable with unexported type'
+    - id: unparam
+      pattern: '^_$'
