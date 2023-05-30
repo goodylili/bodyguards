@@ -36,18 +36,14 @@ be analyzed or fixed.
 
 The configuration file is a YAML file where you can specify options for Bodyguards. Here are some available options:
 
-- `formatter`: Format your Go code with `gofmt`.
 - `linter`: Lint your Go code with `golangci-lint`.
 - `architecture`: Set up the file architecture for your program following one of the popular architectural patterns.
 - `report`: Generate a comprehensive report and rating of your project using `Go Report Card`.
 - `documentation`: Generate the documentation for your project with `Godoc`.
-- `vet`: Vet your Go project with `govet`.
 
 Here's the contents of an example `bodyguards.yaml` file
 
 ```yaml
-# Formatting options
-formatter: gofmt
 
 # Linter options
 linter: golangci-lint
@@ -61,8 +57,6 @@ report: Go Report Card
 # Documentation options
 documentation: Godoc
 
-# Vet options
-vet: govet
 ```
 
 Once you've selected the configuration options for your app; You can use the `run` command to run `bodyguards` to
