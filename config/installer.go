@@ -2,12 +2,17 @@ package config
 
 import (
 	"fmt"
+	"gopkg.in/yaml.v3"
+	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"runtime"
 )
 
-// InstallDependencies rewrite to install dependencies based on yaml and sets up permissions for architecture bash scripts
-func InstallDependencies() error {
+// SetupDependencies rewrite to install dependencies based on yaml and sets up permissions for architecture bash scripts
+func SetupDependencies() error {
 	// Give executable permission to files
 	err := GiveExecutablePermissionToFiles()
 	if err != nil {
@@ -39,23 +44,35 @@ func InstallDependencies() error {
 	}
 	fmt.Println(msg)
 
+	err = createBodyguardsYAML()
+	if err != nil {
+		log.Fatalf("Failed to create bodyguards.yaml: %v", err)
+	}
+
+	fmt.Println("bodyguards.yaml created successfully!")
+
 	// All operations completed successfully
 	return nil
 }
 
 func GiveExecutablePermissionToFiles() error {
+	_, filename, _, _ := runtime.Caller(0)
+	baseDir := filepath.Dir(filename)
+
 	filePaths := []string{
-		"internal/architecture/hexagonal.sh",
-		"internal/architecture/microservice.sh",
-		"internal/architecture/monolithic.sh",
-		"internal/architecture/mvc.sh",
+		filepath.Join(baseDir, "hexagonal.go"),
+		filepath.Join(baseDir, "microservice.sh"),
+		filepath.Join(baseDir, "monolithic.sh"),
+		filepath.Join(baseDir, "architecture", "mvc.sh"),
 	}
+
 	for _, filePath := range filePaths {
 		err := os.Chmod(filePath, 0755)
 		if err != nil {
 			return err
 		}
 	}
+
 	return nil
 }
 
@@ -108,4 +125,39 @@ func installGoReportCard() (string, error) {
 	}
 
 	return "Goreportcard-cli successfully installed", nil
+}
+
+type BodyguardsConfig struct {
+	Run struct {
+		Architecture string   `yaml:"architecture"`
+		Enable       []string `yaml:"enable"`
+	} `yaml:"run"`
+}
+
+func createBodyguardsYAML() error {
+	config := BodyguardsConfig{
+		Run: struct {
+			Architecture string   `yaml:"architecture"`
+			Enable       []string `yaml:"enable"`
+		}{
+			Architecture: "clean",
+			Enable: []string{
+				"linter",
+				"report",
+				"documentation",
+			},
+		},
+	}
+
+	data, err := yaml.Marshal(config)
+	if err != nil {
+		return fmt.Errorf("failed to marshal YAML: %v", err)
+	}
+
+	err = ioutil.WriteFile("bodyguards.yaml", data, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write YAML file: %v", err)
+	}
+
+	return nil
 }

@@ -7,6 +7,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Goodnessuc/bodyguards/config"
 
 	"github.com/spf13/cobra"
 )
@@ -14,15 +15,23 @@ import (
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "The init command initializes go-bodyguards for your project",
+	Long: `
+	The init command is a fundamental command in the go-bodyguards framework. 
+	It is designed to initialize and set up the go-bodyguards framework for your project. 
+	This command is an essential step to quickly get started with using the go-bodyguards framework for your Go applications.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+    When executing the init command, it performs several tasks to ensure that your project is properly set up and ready to use.
+	These tasks include installing dependencies, setting up necessary files, and configuring the framework to match your project's requirements.`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("init called")
+		err := config.SetupDependencies()
+		if err != nil {
+			fmt.Println("Error: failed to install dependencies:", err)
+		} else {
+			fmt.Println("Setup files and Dependencies installed successfully")
+		}
 	},
 }
 
