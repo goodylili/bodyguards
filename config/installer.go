@@ -7,18 +7,10 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
-	"runtime"
 )
 
 // SetupDependencies rewrite to install dependencies based on yaml and sets up permissions for architecture bash scripts
 func SetupDependencies() error {
-	// Give executable permission to files
-	err := GiveExecutablePermissionToFiles()
-	if err != nil {
-		fmt.Println("Error: failed to give executable permission to files:", err)
-		return err
-	}
 
 	// Install golangCI-lint
 	msg, err := installGolangCILint()
@@ -52,27 +44,6 @@ func SetupDependencies() error {
 	fmt.Println("bodyguards.yaml created successfully!")
 
 	// All operations completed successfully
-	return nil
-}
-
-func GiveExecutablePermissionToFiles() error {
-	_, filename, _, _ := runtime.Caller(0)
-	baseDir := filepath.Dir(filename)
-
-	filePaths := []string{
-		filepath.Join(baseDir, "hexagonal.go"),
-		filepath.Join(baseDir, "microservice.sh"),
-		filepath.Join(baseDir, "monolithic.sh"),
-		filepath.Join(baseDir, "architecture", "mvc.sh"),
-	}
-
-	for _, filePath := range filePaths {
-		err := os.Chmod(filePath, 0755)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 
