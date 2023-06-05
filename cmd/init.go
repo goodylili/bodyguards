@@ -25,6 +25,7 @@ var initCmd = &cobra.Command{
 	These tasks include installing dependencies, setting up necessary files, and configuring the framework to match your project's requirements.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Sprintln("installing dependencies... ")
 		err := config.SetupDependencies()
 		if err != nil {
 			fmt.Println("Error: failed to install dependencies:", err)

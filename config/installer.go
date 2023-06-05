@@ -28,14 +28,6 @@ func SetupDependencies() error {
 	}
 	fmt.Println(msg)
 
-	// Install Goreportcard-cli
-	msg, err = installGoReportCard()
-	if err != nil {
-		fmt.Println("Error: failed to install Goreportcard-cli:", err)
-		return err
-	}
-	fmt.Println(msg)
-
 	err = createBodyguardsYAML()
 	if err != nil {
 		log.Fatalf("Failed to create bodyguards.yaml: %v", err)
@@ -43,6 +35,16 @@ func SetupDependencies() error {
 
 	fmt.Println("bodyguards.yaml created successfully!")
 
+	fmt.Sprintln("Please wait while we install Go report card.")
+	fmt.Sprintln("This may take a while...")
+
+	// Install Goreportcard-cli
+	msg, err = installGoReportCard()
+	if err != nil {
+		fmt.Println("Error: failed to install Goreportcard-cli:", err)
+		return err
+	}
+	fmt.Println(msg)
 	// All operations completed successfully
 	return nil
 }
@@ -68,6 +70,7 @@ func installGodoc() (string, error) {
 }
 
 func installGoReportCard() (string, error) {
+
 	// Git clone
 	cmd := exec.Command("git", "clone", "https://github.com/gojp/goreportcard.git")
 	err := cmd.Run()
@@ -93,6 +96,16 @@ func installGoReportCard() (string, error) {
 	err = cmd.Run()
 	if err != nil {
 		return "", fmt.Errorf("failed to execute 'go install': %w", err)
+	}
+
+	err = os.Chdir("..")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+	cmd = exec.Command("rm", "-rf", "goreportcard")
+	err = cmd.Run()
+	if err != nil {
+		return "", fmt.Errorf("failed to delete goreportcard repository after installation  %w", err)
 	}
 
 	return "Goreportcard-cli successfully installed", nil
