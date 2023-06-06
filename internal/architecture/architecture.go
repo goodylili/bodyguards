@@ -2,6 +2,7 @@ package architecture
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -60,7 +61,7 @@ func CreateMicroserviceStructure() {
 
 	// Create directories
 	directories := []string{
-		"cmd", "configs", "docs", "internal", "pkg",
+		"cmd", "configs", "documentation", "internal", "pkg",
 		"local", "mocks", "proto", "pb", "test",
 		".git",
 	}
@@ -122,35 +123,32 @@ func CreateMonolithicDirectory() {
 
 func CreateMVCDirectories() {
 	// Create the main directory
-	err := os.Mkdir("myapp", 0755)
-	if err != nil {
-		return
-	}
-
-	// Create the app directory
-	err = os.MkdirAll("myapp/app", 0755)
+	err := os.Mkdir("app", 0755)
 	if err != nil {
 		return
 	}
 
 	// Create subdirectories inside the app directory
 	subdirectories := []string{
-		"myapp/app/controllers",
-		"myapp/app/models",
-		"myapp/app/views",
-		"myapp/app/middlewares",
-		"myapp/app/routers",
-		"myapp/app/services",
-		"myapp/app/utils",
+		"app/controllers",
+		"app/models",
+		"app/views",
+		"app/middlewares",
+		"app/routers",
+		"app/services",
+		"app/utils",
 	}
 	for _, dir := range subdirectories {
-		os.MkdirAll(dir, 0755)
+		err := os.MkdirAll(dir, 0755)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 	// Create subdirectories inside the views directory
 	viewSubdirectories := []string{
-		"myapp/app/views/home",
-		"myapp/app/views/user",
+		"app/views/home",
+		"app/views/user",
 	}
 	for _, dir := range viewSubdirectories {
 		err := os.MkdirAll(dir, 0755)
@@ -161,9 +159,9 @@ func CreateMVCDirectories() {
 
 	// Create subdirectories inside the static directory
 	staticSubdirectories := []string{
-		"myapp/static/css",
-		"myapp/static/js",
-		"myapp/static/img",
+		"static/css",
+		"static/js",
+		"static/img",
 	}
 	for _, dir := range staticSubdirectories {
 		err := os.MkdirAll(dir, 0755)
@@ -173,7 +171,7 @@ func CreateMVCDirectories() {
 	}
 
 	// Create subdirectories inside the templates directory
-	err = os.MkdirAll("myapp/templates", 0755)
+	err = os.MkdirAll("templates", 0755)
 	if err != nil {
 		return
 	}

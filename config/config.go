@@ -13,6 +13,21 @@ type BodyguardsConfig struct {
 	} `yaml:"run"`
 }
 
+func ReadBodyguardsYAML() (*BodyguardsConfig, error) {
+	data, err := os.ReadFile("bodyguards.yaml")
+	if err != nil {
+		return nil, fmt.Errorf("failed to read YAML file: %v", err)
+	}
+
+	var config BodyguardsConfig
+	err = yaml.Unmarshal(data, &config)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal YAML: %v", err)
+	}
+
+	return &config, nil
+}
+
 func CreateBodyguardsYAML() error {
 	config := BodyguardsConfig{
 		Run: struct {
@@ -23,7 +38,7 @@ func CreateBodyguardsYAML() error {
 			Enable: []string{
 				"linter",
 				"report",
-				"documentation",
+				"docs",
 			},
 		},
 	}
@@ -39,19 +54,4 @@ func CreateBodyguardsYAML() error {
 	}
 
 	return nil
-}
-
-func ReadBodyguardsYAML() (*BodyguardsConfig, error) {
-	data, err := os.ReadFile("bodyguards.yaml")
-	if err != nil {
-		return nil, fmt.Errorf("failed to read YAML file: %v", err)
-	}
-
-	var config BodyguardsConfig
-	err = yaml.Unmarshal(data, &config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal YAML: %v", err)
-	}
-
-	return &config, nil
 }

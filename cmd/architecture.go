@@ -8,7 +8,6 @@ import (
 	"fmt"
 	config2 "github.com/Goodnessuc/bodyguards/config"
 	"github.com/Goodnessuc/bodyguards/internal/architecture"
-
 	"github.com/spf13/cobra"
 )
 
@@ -18,8 +17,6 @@ var architectureCmd = &cobra.Command{
 	Short: "Set up file architecture based on project specifications in YAML file",
 	Long:  "This command sets up the file architecture for a project by utilizing the specifications provided in a YAML file. It creates the necessary files and directories to establish the desired project structure.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("architecture called")
-
 		// Retrieve the architecture specified
 		YAMLconfig, err := config2.ReadBodyguardsYAML()
 		if err != nil {
@@ -37,6 +34,8 @@ var architectureCmd = &cobra.Command{
 			architecture.CreateMonolithicDirectory()
 		case "mvc":
 			architecture.CreateMVCDirectories()
+		case "clean":
+			fmt.Println("clean specifies that you don't want to initialize any of the supported architectures")
 		default:
 			fmt.Println("Invalid architecture specified in the YAML file.")
 			return

@@ -3,4 +3,4 @@ run:
   enable:
     - linter
     - report
-    - documentation
+    - godocumentation

@@ -2,26 +2,37 @@
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 
 */
+
 package cmd
 
 import (
 	"fmt"
-
+	config2 "github.com/Goodnessuc/bodyguards/config"
+	"github.com/Goodnessuc/bodyguards/internal/godocumentation"
 	"github.com/spf13/cobra"
+	"log"
 )
 
-// documentationCmd represents the documentation command
+// documentationCmd represents the docs command
 var documentationCmd = &cobra.Command{
 	Use:   "documentation",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "View project documentation",
+	Long: `View the project's documentation by starting a local server and accessing it in a web browser.
+This command starts a godoc server and provides the URL to access the documentation.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("documentation called")
+		config, err := config2.ReadBodyguardsYAML()
+		if err != nil {
+			log.Fatalf("Error reading Bodyguards YAML: %v", err)
+		}
+		enabledSlice := config.Run.Enable
+		for _, value := range enabledSlice {
+			if value == "documentation" {
+				fmt.Println(godocumentation.RunDocsCommand())
+				return
+			}
+		}
+		fmt.Println("You didn't specify documentation as an option is your YAML file")
+
 	},
 }
 

@@ -52,7 +52,7 @@ run:
   enable: # enable features
     - linter
     - report
-    - documentation
+    - godocumentation
 
 ```
 
