@@ -1,27 +1,41 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
+
 package cmd
 
 import (
 	"fmt"
-
+	config2 "github.com/Goodnessuc/bodyguards/config"
+	"github.com/Goodnessuc/bodyguards/internal/report"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 // reportCmd represents the report command
 var reportCmd = &cobra.Command{
 	Use:   "report",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Display report ratings for the Go project",
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: `This command generates and displays report ratings for your Go project. 
+	It executes the 'goreportcard-cli' command with the '-v' flag to generate the ratings. 
+	The output is then returned as a string, trimming any leading or trailing whitespace.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("report called")
+
+		config, err := config2.ReadBodyguardsYAML()
+		if err != nil {
+			log.Fatalf("Error reading Bodyguards YAML: %v", err)
+		}
+		enabledSlice := config.Run.Enable
+		for _, value := range enabledSlice {
+			if value == "report" {
+				fmt.Println(report.RunReportCommand())
+				return
+			}
+		}
+
+		fmt.Println("You didn't specify report as an option is your YAML file")
+
 	},
 }
 
