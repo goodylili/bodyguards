@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func createHexagonal() {
+func CreateHexagonal() {
 	// create top level directories
 	directories := []string{"cmd", "internal", "pkg", "vendor"}
 	for _, dir := range directories {
@@ -56,7 +56,7 @@ func createHexagonal() {
 	fmt.Println("Directory structure created successfully.")
 }
 
-func createMicroserviceStructure() {
+func CreateMicroserviceStructure() {
 
 	// Create directories
 	directories := []string{
@@ -88,7 +88,7 @@ func createMicroserviceStructure() {
 	fmt.Println("Directory structure created successfully!")
 }
 
-func createMonolithicDirectory() {
+func CreateMonolithicDirectory() {
 	// Create the directory structure
 	directories := []string{
 		"cmd/app",
@@ -120,7 +120,7 @@ func createMonolithicDirectory() {
 	fmt.Println("Directory tree created successfully.")
 }
 
-func createMVCDirectories() {
+func CreateMVCDirectories() {
 	// Create the main directory
 	err := os.Mkdir("myapp", 0755)
 	if err != nil {

@@ -2,8 +2,6 @@ package config
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -28,7 +26,7 @@ func SetupDependencies() error {
 	}
 	fmt.Println(msg)
 
-	err = createBodyguardsYAML()
+	err = CreateBodyguardsYAML()
 	if err != nil {
 		log.Fatalf("Failed to create bodyguards.yaml: %v", err)
 	}
@@ -109,39 +107,4 @@ func installGoReportCard() (string, error) {
 	}
 
 	return "Goreportcard-cli successfully installed", nil
-}
-
-type BodyguardsConfig struct {
-	Run struct {
-		Architecture string   `yaml:"architecture"`
-		Enable       []string `yaml:"enable"`
-	} `yaml:"run"`
-}
-
-func createBodyguardsYAML() error {
-	config := BodyguardsConfig{
-		Run: struct {
-			Architecture string   `yaml:"architecture"`
-			Enable       []string `yaml:"enable"`
-		}{
-			Architecture: "clean",
-			Enable: []string{
-				"linter",
-				"report",
-				"documentation",
-			},
-		},
-	}
-
-	data, err := yaml.Marshal(config)
-	if err != nil {
-		return fmt.Errorf("failed to marshal YAML: %v", err)
-	}
-
-	err = ioutil.WriteFile("bodyguards.yaml", data, 0644)
-	if err != nil {
-		return fmt.Errorf("failed to write YAML file: %v", err)
-	}
-
-	return nil
 }

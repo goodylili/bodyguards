@@ -1,11 +1,13 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
+
 package cmd
 
 import (
 	"fmt"
+	config2 "github.com/Goodnessuc/bodyguards/config"
+	"github.com/Goodnessuc/bodyguards/internal/architecture"
 
 	"github.com/spf13/cobra"
 )
@@ -13,28 +15,36 @@ import (
 // architectureCmd represents the architecture command
 var architectureCmd = &cobra.Command{
 	Use:   "architecture",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Set up file architecture based on project specifications in YAML file",
+	Long:  "This command sets up the file architecture for a project by utilizing the specifications provided in a YAML file. It creates the necessary files and directories to establish the desired project structure.",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("architecture called")
+
+		// Retrieve the architecture specified
+		YAMLconfig, err := config2.ReadBodyguardsYAML()
+		if err != nil {
+			fmt.Printf("Error reading YAML file: %v\n", err)
+			return
+		}
+
+		// Run a function based on the specified architecture
+		switch YAMLconfig.Run.Architecture {
+		case "hexagonal":
+			architecture.CreateHexagonal()
+		case "microservice":
+			architecture.CreateMicroserviceStructure()
+		case "monolithic":
+			architecture.CreateMonolithicDirectory()
+		case "mvc":
+			architecture.CreateMVCDirectories()
+		default:
+			fmt.Println("Invalid architecture specified in the YAML file.")
+			return
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(architectureCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// architectureCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// architectureCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
