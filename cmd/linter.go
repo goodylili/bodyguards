@@ -2,26 +2,41 @@
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 
 */
+
 package cmd
 
 import (
 	"fmt"
-
+	config2 "github.com/Goodnessuc/bodyguards/config"
+	"github.com/Goodnessuc/bodyguards/internal/linter"
 	"github.com/spf13/cobra"
+	"log"
 )
 
 // linterCmd represents the linter command
 var linterCmd = &cobra.Command{
 	Use:   "linter",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "The linter command runs a linter that fixes your code based on Go standards",
+	Long: `
+	The linter command utilizes Golangci-lint, a popular linter for Go programs, to analyze and improve the quality of your code. 
+	It applies a set of predefined rules and standards to identify potential issues, enforce best practices, and suggest improvements. 
+	By running the linter, you can automatically detect and fix various code problems such as unused variables, incorrect formatting, incorrect imports, improper error handling, code complexity, and more. 
+	It helps ensure that your code follows the idiomatic Go style and adheres to recommended practices.
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("linter called")
+		config, err := config2.ReadBodyguardsYAML()
+		if err != nil {
+			log.Fatalf("Error reading Bodyguards YAML: %v", err)
+		}
+		enabledSlice := config.Run.Enable
+		for _, value := range enabledSlice {
+			if value == "linter" {
+				fmt.Println(linter.LintPrograms())
+				return
+			}
+		}
+		fmt.Println("You didn't specify linting as an option is your YAML file")
+
 	},
 }
 

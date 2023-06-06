@@ -1,6 +1,0 @@
-run:
-  architecture: clean
-  enable:
-    - linter
-    - report
-    - godocumentation

@@ -6,7 +6,7 @@ import (
 	"os/exec"
 )
 
-func LintPrograms() {
+func LintPrograms() string {
 	cmd := exec.Command("golangci-lint", "run", "--config=config/.golangci.yml")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -15,4 +15,6 @@ func LintPrograms() {
 	if err != nil {
 		log.Fatalf("Error running golangci-lint: %s", err)
 	}
+
+	return "Golangci-lint is running"
 }
